@@ -2,15 +2,24 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UrlController;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware('auth')->group(function () {
+    // returns dashboard view
+    Route::view('/dashboard','dashboard')->name('dashboard');
+
+    // routes for the url page
+    Route::get('/urls',[Urlcontroller::class,'index'])->name('urls');
+
+    // route for url submission
+    Route::post('/urls',[Urlcontroller::class,'store'])->name('urls.create');
+
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

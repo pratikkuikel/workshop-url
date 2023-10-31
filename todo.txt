@@ -1,0 +1,9 @@
+user story -  I should be able to create a short link using a form.
+
+1. create a url submission form.
+ - Add a nav link / page for url.
+ - create controller and store method.
+
+2. persist the url in the database table.
+
+3. create a table view for the created urls.
