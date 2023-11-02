@@ -11,15 +11,24 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     // returns dashboard view
-    Route::view('/dashboard','dashboard')->name('dashboard');
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
 
     // routes for the url page
-    Route::get('/urls',[Urlcontroller::class,'index'])->name('urls');
+    Route::get('/urls', [Urlcontroller::class, 'index'])->name('urls');
 
     // route for url submission
-    Route::post('/urls',[Urlcontroller::class,'store'])->name('urls.create');
+    Route::post('/urls', [Urlcontroller::class, 'store'])->name('urls.create');
 
+    Route::get('/urls/edit/{id}', [Urlcontroller::class, 'edit'])->name('urls.edit');
+
+    Route::post('/urls/edit/{id}', [Urlcontroller::class, 'update'])->name('urls.update');
+
+    Route::get('/urls/delete/{id}', [UrlController::class, 'delete'])->name('urls.delete');
 });
+
+// http://workshop-url/short/1Vo5Dq
+
+Route::get('/short/{url}', [UrlController::class, 'redirect']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,4 +36,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

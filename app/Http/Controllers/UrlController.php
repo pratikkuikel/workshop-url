@@ -10,7 +10,9 @@ class UrlController extends Controller
 {
     public function index()
     {
-        return view('url');
+        $urls = Url::all();
+
+        return view('url', compact('urls'));
     }
 
     public function store(Request $request)
@@ -21,5 +23,35 @@ class UrlController extends Controller
         $url->save();
 
         return redirect()->back();
+    }
+
+    public function edit($id)
+    {
+        $url = Url::find($id);
+        return view('url-edit', compact('url'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $url = Url::find($id);
+        $url->target_url = $request->target_url;
+        $url->save();
+
+        return redirect()->route('urls');
+    }
+
+    public function delete($id)
+    {
+        $url = Url::find($id);
+        $url->delete();
+
+        return redirect()->route('urls');
+    }
+
+    public function redirect($url)
+    {
+        $record = Url::where('created_url', $url)->first();
+
+        return redirect()->away($record->target_url);
     }
 }
